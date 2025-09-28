@@ -3,6 +3,8 @@ package securitytut.bloggy.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +26,8 @@ public class Category {
     private String name;
 
 
+    @OneToMany(mappedBy = "category")
+    private List<Post> posts = new ArrayList<>();
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
