@@ -1,5 +1,6 @@
 package securitytut.bloggy.services.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +54,20 @@ public class TagServiceImpl implements TagService {
             }
             tagRepository.deleteById(id);
         });
+    }
+
+    @Override
+    public Tag getTagById(UUID id) {
+    return tagRepository
+                .findById(id).orElseThrow(()->new EntityNotFoundException("Tag not found with id" + id));
+    }
+
+    @Override
+    public List<Tag> getTagByIds(Set<UUID> ids) {
+    List<Tag> tagsByIds=  tagRepository.findAllById(ids);
+    if(tagsByIds.size() != ids.size()){
+        throw new EntityNotFoundException("Not All associated tag IDs exist");
+    }
+    return tagsByIds;
     }
 }
